@@ -5,8 +5,9 @@ import { useModel } from '../../hooks/index.js'
 import type { VersionId } from '../../services/index.js'
 import { checkVersion } from '../../services/index.js'
 import { BiomeSourcePreview, BlockStatePreview, DecoratorPreview, DensityFunctionPreview, LootTablePreview, ModelPreview, NoisePreview, NoiseSettingsPreview, StructureSetPreview } from '../previews/index.js'
+import CraftingPreview from '../previews/CraftingPreview.jsx'
 
-export const HasPreview = ['loot_table', 'dimension', 'worldgen/density_function', 'worldgen/noise', 'worldgen/noise_settings', 'worldgen/configured_feature', 'worldgen/placed_feature', 'worldgen/structure_set', 'block_definition', 'model']
+export const HasPreview = ['recipe','loot_table', 'dimension', 'worldgen/density_function', 'worldgen/noise', 'worldgen/noise_settings', 'worldgen/configured_feature', 'worldgen/placed_feature', 'worldgen/structure_set', 'block_definition', 'model']
 
 type PreviewPanelProps = {
 	model: DataModel | undefined,
@@ -16,6 +17,7 @@ type PreviewPanelProps = {
 	onError: (message: string) => unknown,
 }
 export function PreviewPanel({ model, version, id, shown }: PreviewPanelProps) {
+
 	const [, setCount] = useState(0)
 
 	useModel(model, () => {
@@ -28,6 +30,10 @@ export function PreviewPanel({ model, version, id, shown }: PreviewPanelProps) {
 
 	if (id === 'loot_table') {
 		return <LootTablePreview {...{ model, version, shown, data }} />
+	}
+
+	if (id === 'recipe') {
+		return <CraftingPreview {...{ model, version, shown, data }} />
 	}
 
 	if (id === 'dimension' && model.get(new Path(['generator', 'type']))?.endsWith('noise')) {
