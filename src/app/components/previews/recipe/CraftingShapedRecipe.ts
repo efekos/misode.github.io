@@ -1,4 +1,4 @@
-import { Identifier, ItemStack, NbtCompound } from 'deepslate'
+import { Identifier, ItemStack } from 'deepslate'
 import type { SlottedItem } from '../LootTable.js'
 import type { VersionId } from '../../../services/index.js'
 
