@@ -1,3 +1,4 @@
+import { ErrorPanel } from '../ErrorPanel.jsx'
 import type { PreviewProps } from './index.js'
 import CraftingShapedRecipePreview from './recipe/CraftingShapedRecipePreview.jsx'
 
@@ -5,8 +6,9 @@ const hasRecipePreview = ['minecraft:crafting_shaped']
 
 export default function RecipePreview({data}: PreviewProps){
 
-	if(!('type' in data)) return <span>No preview available.</span> // TODO locale
-	if(!hasRecipePreview.includes(data['type'])) return <span>No preview available for {data['type']}.</span>
+	// TODO locale
+	if(!('type' in data)) return <ErrorPanel error={'No preview available.'}></ErrorPanel>
+	if(!hasRecipePreview.includes(data['type'])) return <ErrorPanel error={`No preview available for ${data['type']}.`}></ErrorPanel>
 
 	const recipeType = data['type']
 
