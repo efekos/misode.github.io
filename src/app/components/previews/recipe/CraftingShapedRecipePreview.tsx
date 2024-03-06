@@ -3,10 +3,15 @@ import { clamp } from '../../../Utils.js'
 import { useEffect, useState } from 'preact/hooks'
 import type { SlottedItem } from '../LootTable.js'
 import { generateItemsForShapedRecipe } from './CraftingShapedRecipe.js'
+import { BtnMenu } from '../../BtnMenu.jsx'
+import { Btn } from '../../Btn.jsx'
+import { useLocale } from '../../../contexts/Locale.jsx'
 
 export default function CraftingShapedRecipePreview({ data }: { data: any }) {
 
 	const [items, setItems] = useState<SlottedItem[]>([])
+	const [advancedTooltips,setAdvancedTooltips] = useState<boolean>(false);
+	const {locale} = useLocale()
 
 	useEffect(() => {
 
@@ -14,22 +19,30 @@ export default function CraftingShapedRecipePreview({ data }: { data: any }) {
 
 		setItems(items)
 
-	}, [data])
+	}, [data,advancedTooltips])
 
-	return <div class='preview-overlay'>
+	return <>
+		<div class='preview-overlay'>
 
-		<img src='/images/crafting.png' class='pixelated' draggable={false} />
+			<img src='/images/crafting.png' class='pixelated' draggable={false} />
 
-		{items.map(item =>
+			{items.map(item =>
 
-			<div key={item.slot} style={slotStyle(item.slot)}>
-				<ItemDisplay item={item.item} slotDecoration={true} />
-			</div>
+				<div key={item.slot} style={slotStyle(item.slot)}>
+					<ItemDisplay item={item.item} slotDecoration={true} advancedTooltip={advancedTooltips}/>
+				</div>
 
-		)}
+			)}
+		</div>
 
+		<div className="controls preview-controls">
 
-	</div>
+			<BtnMenu tooltip={locale('settings')} icon='gear'>
+				<Btn icon={advancedTooltips?'square_fill':'square'} label='Advanced tooltips' onClick={()=>setAdvancedTooltips(!advancedTooltips)} />
+			</BtnMenu>
+
+		</div>
+	</>
 }
 
 

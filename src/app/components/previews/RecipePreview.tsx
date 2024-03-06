@@ -6,7 +6,6 @@ const hasRecipePreview = ['minecraft:crafting_shaped']
 
 export default function RecipePreview({data}: PreviewProps){
 
-	// TODO locale
 	if(!('type' in data)) return <ErrorPanel error={'No preview available.'}></ErrorPanel>
 	if(!hasRecipePreview.includes(data['type'])) return <ErrorPanel error={`No preview available for ${data['type']}.`}></ErrorPanel>
 
