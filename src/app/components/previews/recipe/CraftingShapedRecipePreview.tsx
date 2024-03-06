@@ -6,16 +6,18 @@ import { generateItemsForShapedRecipe } from './CraftingShapedRecipe.js'
 import { BtnMenu } from '../../BtnMenu.jsx'
 import { Btn } from '../../Btn.jsx'
 import { useLocale } from '../../../contexts/Locale.jsx'
+import { useVersion } from '../../../contexts/Version.jsx'
 
 export default function CraftingShapedRecipePreview({ data }: { data: any }) {
 
 	const [items, setItems] = useState<SlottedItem[]>([])
+	const {version} = useVersion()
 	const [advancedTooltips,setAdvancedTooltips] = useState<boolean>(false);
 	const {locale} = useLocale()
 
 	useEffect(() => {
 
-		const items = generateItemsForShapedRecipe(data)
+		const items = generateItemsForShapedRecipe(data,version)
 
 		setItems(items)
 
