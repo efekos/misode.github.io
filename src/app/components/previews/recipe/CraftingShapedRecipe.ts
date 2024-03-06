@@ -46,12 +46,12 @@ export interface ShapedRecipeDataModel {
 	result:RecipeResultDataModel
 }
 
-interface RecipeResultDataModel {
+export interface RecipeResultDataModel {
 	item:string,
 	count?:number
 }
 
-interface RecipeIngredientDataModel {
+export interface RecipeIngredientDataModel {
 	item?:string,
 	tag?:string
 }
