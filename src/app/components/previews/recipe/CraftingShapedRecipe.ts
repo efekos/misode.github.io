@@ -1,4 +1,4 @@
-import { Identifier, ItemStack } from 'deepslate'
+import { Identifier, ItemStack, Items } from 'deepslate'
 import type { SlottedItem } from '../LootTable.js'
 import type { VersionId } from '../../../services/index.js'
 
@@ -47,7 +47,7 @@ export function generateItemsForShapedRecipe(___d: any,versionId:VersionId): Slo
 		
 	}
 
-	return result
+	return result.filter(r=>!r.item.is(Items.AIR.id))
 }
 
 
