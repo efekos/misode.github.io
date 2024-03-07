@@ -102,6 +102,22 @@ export async function fetchRegistries(versionId: VersionId) {
 	}
 }
 
+export async function fetchItemTag(i:string,versionId:VersionId):Promise<string[]>{
+	console.debug(`[fetchItemTag] ${i} ${versionId}`)
+
+	const [namespace,tag] = i.split(':')
+	const version = config.versions.find(v => v.id === versionId)!
+
+	try {
+		const fetched = await cachedFetch<{values:string[]}>(`${mcmeta(version,'data')}/data/${namespace}/tags/items/${tag}.json`)
+
+		return fetched.values
+	} catch (e){
+		throw new Error(`Error occurred while fetching tag ${i}: ${message(e)}`)
+	}
+}
+
+
 export async function fetchBlockStates(versionId: VersionId) {
 	console.debug(`[fetchBlockStates] ${versionId}`)
 	const version = config.versions.find(v => v.id === versionId)!
