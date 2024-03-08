@@ -1,8 +1,9 @@
 import { ErrorPanel } from '../ErrorPanel.jsx'
 import type { PreviewProps } from './index.js'
 import CraftingShapedRecipePreview from './recipe/CraftingShapedRecipePreview.jsx'
+import CraftingShapelessRecipePreview from './recipe/CraftingShapelessRecipePreview.jsx'
 
-const hasRecipePreview = ['minecraft:crafting_shaped']
+const hasRecipePreview = ['minecraft:crafting_shaped','minecraft:crafting_shapeless']
 
 export default function RecipePreview({data}: PreviewProps){
 
@@ -12,6 +13,7 @@ export default function RecipePreview({data}: PreviewProps){
 	const recipeType = data['type']
 
 	if(recipeType==='minecraft:crafting_shaped') return <CraftingShapedRecipePreview data={data}/>
+	if(recipeType==='minecraft:crafting_shapeless') return <CraftingShapelessRecipePreview data={data}/>
 
 	else return <span>Couldn't find preview</span>
 

@@ -1,6 +1,8 @@
 import { Identifier, ItemStack, Items } from 'deepslate'
 import type { SlottedItem } from '../LootTable.js'
-import { fetchItemTag, VersionId } from '../../../services/index.js'
+import type { VersionId } from '../../../services/index.js'
+import { fetchItemTag } from '../../../services/index.js'
+import type { RecipeCategory, RecipeIngredientDataModel, RecipeResultDataModel } from './Common.js'
 
 function pad(s: string): string {
 	let i = s
@@ -46,23 +48,10 @@ export async function generateItemsForShapedRecipe(___d: any, versionId: Version
 }
 
 
-export type RecipeType = 'blocks' | 'building' | 'equipment' | 'food' | 'misc' | 'redstone'
-
 export interface ShapedRecipeDataModel {
 	type: 'minecraft:crafting_shaped',
-	category?: string,
+	category?: RecipeCategory,
 	key: Record<string, RecipeIngredientDataModel>
 	pattern: string[] | { node: string }[]
 	result: RecipeResultDataModel
-}
-
-export interface RecipeResultDataModel {
-	item: string,
-	id: string
-	count?: number
-}
-
-export interface RecipeIngredientDataModel {
-	item?: string,
-	tag?: string
 }
