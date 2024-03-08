@@ -11,17 +11,19 @@ import { useVersion } from '../../../contexts/Version.jsx'
 export default function CraftingShapedRecipePreview({ data }: { data: any }) {
 
 	const [items, setItems] = useState<SlottedItem[]>([])
-	const {version} = useVersion()
-	const [advancedTooltips,setAdvancedTooltips] = useState<boolean>(false);
-	const {locale} = useLocale()
+	const { version } = useVersion()
+	const [advancedTooltips, setAdvancedTooltips] = useState<boolean>(false)
+	const { locale } = useLocale()
 
 	useEffect(() => {
 
-		const items = generateItemsForShapedRecipe(data,version)
+		generateItemsForShapedRecipe(data, version).then(newItems => {
+			setItems(newItems)
+		})
 
-		setItems(items)
 
-	}, [data,advancedTooltips])
+
+	}, [data, advancedTooltips])
 
 	return <>
 		<div class='preview-overlay'>
@@ -31,7 +33,7 @@ export default function CraftingShapedRecipePreview({ data }: { data: any }) {
 			{items.map(item =>
 
 				<div key={item.slot} style={slotStyle(item.slot)}>
-					<ItemDisplay item={item.item} slotDecoration={true} advancedTooltip={advancedTooltips}/>
+					<ItemDisplay item={item.item} slotDecoration={true} advancedTooltip={advancedTooltips} />
 				</div>
 
 			)}
@@ -40,7 +42,7 @@ export default function CraftingShapedRecipePreview({ data }: { data: any }) {
 		<div className="controls preview-controls">
 
 			<BtnMenu tooltip={locale('settings')} icon='gear'>
-				<Btn icon={advancedTooltips?'square_fill':'square'} label='Advanced tooltips' onClick={()=>setAdvancedTooltips(!advancedTooltips)} />
+				<Btn icon={advancedTooltips ? 'square_fill' : 'square'} label='Advanced tooltips' onClick={() => setAdvancedTooltips(!advancedTooltips)} />
 			</BtnMenu>
 
 		</div>

@@ -1,6 +1,6 @@
 import { Identifier, ItemStack, Items } from 'deepslate'
 import type { SlottedItem } from '../LootTable.js'
-import type { VersionId } from '../../../services/index.js'
+import { fetchItemTag, VersionId } from '../../../services/index.js'
 
 function pad(s: string): string {
 	let i = s
@@ -8,46 +8,41 @@ function pad(s: string): string {
 	return i
 }
 
-export function generateItemsForShapedRecipe(___d: any,versionId:VersionId): SlottedItem[] {
+export async function generateItemsForShapedRecipe(___d: any, versionId: VersionId): Promise<SlottedItem[]> {
 	const data = ___d as ShapedRecipeDataModel
 	const result: SlottedItem[] = []
 
-	let i = 0
-	data.pattern.forEach(row => {
-		let j = 0;
 
-		(typeof row === 'object' ? pad(row['node']) : pad(row)).split('').forEach(async char => {
-			if (j >= 3) return
+	for (let i = 0; i < data.pattern.length; i++) {
+		const r = pad(data.pattern[i] as string)
+		const row = (typeof r === 'object' ? pad(r['node']) : pad(r))
 
-			const ingredient = char in data.key ? data.key[char] : { item: 'minecraft:air' }
+		for (let j = 0; j < 3; j++) {
+			const char = row[j]
+			console.log(i, j, row, char)
+			const ingredient: RecipeIngredientDataModel = char in data.key ? data.key[char] : { item: 'minecraft:air' }
 
 			if ('item' in ingredient) {
-				result.push({ slot: i, item: new ItemStack(Identifier.parse(ingredient.item ?? 'minecraft:air'), 1, undefined) })
+				await result.push({ slot: (i * 3) + j, item: new ItemStack(Identifier.parse(ingredient.item ?? 'stone'), 1) })
 			} else if ('tag' in ingredient) {
 
-				// TODO: fetch the tag & put first element to display
+				const tag = await fetchItemTag(ingredient.tag ?? 'minecraft:planks', versionId)
 
-				result.push({
-					slot: i, item: new ItemStack(new Identifier('minecraft', 'barrier'), 1),
-				})
-
+				await result.push({ slot: (i * 3) + j, item: new ItemStack(Identifier.parse(tag[0]), 1) })
 			}
 
+		}
 
-			j++
-			i++
-		})
-
-
-	})
-
-	try {
-		result.push({ slot: 9, item: new ItemStack(Identifier.parse(versionId==='1.20.5'?data.result.id:data.result.item), data.result.count ?? 1, undefined) })
-	} catch(e){
-		
 	}
 
-	return result.filter(r=>!r.item.is(Items.AIR.id))
+
+	try {
+		result.push({ slot: 9, item: new ItemStack(Identifier.parse(versionId === '1.20.5' ? data.result.id : data.result.item), data.result.count ?? 1, undefined) })
+	} catch (e) {
+
+	}
+
+	return Promise.resolve(result.filter(r => !r.item.is(Items.AIR.id)))
 }
 
 
@@ -63,7 +58,7 @@ export interface ShapedRecipeDataModel {
 
 export interface RecipeResultDataModel {
 	item: string,
-	id:string
+	id: string
 	count?: number
 }
 
