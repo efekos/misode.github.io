@@ -105,7 +105,9 @@ export async function fetchRegistries(versionId: VersionId) {
 export async function fetchItemTag(i:string,versionId:VersionId):Promise<string[]>{
 	console.debug(`[fetchItemTag] ${i} ${versionId}`)
 
+	if(!i.includes(':'))return ['minecraft:stone']
 	const [namespace,tag] = i.split(':')
+	if(namespace!=='minecraft') return ['minecraft:stone']
 	const version = config.versions.find(v => v.id === versionId)!
 
 	try {
