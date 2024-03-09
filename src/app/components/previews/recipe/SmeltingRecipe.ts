@@ -8,8 +8,10 @@ export async function generateSmeltingRecipeItems(___d: any, versionId: VersionI
 	const data = ___d as SmeltingRecipeDataModel
 	const result: SlottedItem[] = []
 
+	console.log(data)
+
 	if (typeof data.ingredient === 'object') {
-		const ingredient = data.ingredient
+		const ingredient = (data.ingredient as RecipeIngredientDataModel[])[0]['node'] ?? data.ingredient as RecipeIngredientDataModel
 
 		if ('item' in ingredient) {
 			await result.push({ slot: 0, item: new ItemStack(Identifier.parse(ingredient.item ?? 'stone'), 1) })
