@@ -8,8 +8,6 @@ export async function generateItemsForShapelessRecipe(___d: any, versionId: Vers
 	const data = ___d as ShapelessRecipeDataModel
 	const result: SlottedItem[] = []
 
-
-	console.log(data.ingredients)
 	for (let i = 0; i < data.ingredients.length; i++) {
 		const ingredient = ('node' in data.ingredients[i] ? data.ingredients[i]['node'] : data.ingredients[i])??{item:'stone'}
 		

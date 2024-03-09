@@ -21,7 +21,6 @@ export async function generateItemsForShapedRecipe(___d: any, versionId: Version
 
 		for (let j = 0; j < 3; j++) {
 			const char = row[j]
-			console.log(i, j, row, char)
 			const ingredient: RecipeIngredientDataModel = char in data.key ? data.key[char] : { item: 'minecraft:air' }
 
 			if ('item' in ingredient) {
